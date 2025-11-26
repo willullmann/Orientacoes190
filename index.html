@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orientações 190 | Supervisão</title>
+    <style>
+        :root {
+            --primary-color: #004080; /* Azul Polícia */
+            --secondary-color: #f8f9fa; /* Fundo claro */
+            --accent-general: #0056b3; /* Destaque Geral */
+            --accent-sop: #c82333; /* Destaque SOP Militar */
+            --success-color: #28a745; /* Verde Sucesso */
+            --text-color: #343a40;
+            --text-muted: #6c757d;
+            --card-bg: #ffffff;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-hover: 0 10px 15px rgba(0,0,0,0.1);
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        /* Cabeçalho Moderno */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #002a55);
+            color: white;
+            padding: 30px 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Títulos das Seções */
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            margin-top: 40px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .section-header h2 {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header .badge {
+            background-color: var(--accent-general);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .section-header.sop h2 {
+            color: var(--accent-sop);
+        }
+        
+        .section-header.sop .badge {
+            background-color: var(--accent-sop);
+        }
+
+        /* Grid Responsivo */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* Cartões (Botões) */
+        .card-btn {
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100px;
+            border-left: 6px solid transparent;
+        }
+
+        /* Cores das Bordas Laterais */
+        .general-section .card-btn { border-left-color: var(--accent-general); }
+        .sop-section .card-btn { border-left-color: var(--accent-sop); }
+
+        /* Efeitos de Hover e Foco */
+        .card-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Tipografia do Cartão */
+        .card-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-color);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        /* Ícone de Copiar (SVG) */
+        .icon-copy {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 20px;
+            height: 20px;
+            fill: #e9ecef;
+            transition: fill 0.3s;
+        }
+
+        .card-btn:hover .icon-copy {
+            fill: #ced4da;
+        }
+
+        /* Estado "Copiado" */
+        .card-btn.copied {
+            background-color: var(--success-color) !important;
+            border-left-color: #1e7e34 !important;
+        }
+
+        .card-btn.copied .card-title,
+        .card-btn.copied .card-desc {
+            color: white;
+        }
+
+        .card-btn.copied .icon-copy {
+            fill: white;
+            opacity: 0.5;
+        }
+
+        /* Rodapé */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Ajustes Mobile */
+        @media (max-width: 600px) {
+            header {
+                padding: 20px 15px;
+            }
+            header h1 {
+                font-size: 1.2rem;
+            }
+            .grid {
+                grid-template-columns: 1fr; /* Uma coluna no celular */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Orientações para Atendentes de Emergência</h1>
+        <p>Clique no cartão para copiar o texto automaticamente (velado).</p>
+    </header>
+
+    <main>
+        <div class="section-header">
+            <h2><span class="badge">Geral</span> Sugestões de Mensagens 190</h2>
+        </div>
+
+        <div class="grid general-section">
+            <button class="card-btn" onclick="copyText('intro')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Aviso Inicial (Atendentes Civis)</span>
+                <span class="card-desc">Mensagem introdutória da supervisão para leitura.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg1')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 01: Status/Pausa</span>
+                <span class="card-desc">Alterar motivo indisponível (Lanche, Banheiro).</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg2')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 02: Pós-atende</span>
+                <span class="card-desc">Evitar pausa incorreta.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg3')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 03: Cientificar Supervisão</span>
+                <span class="card-desc">Informar talão, contexto e natureza brevemente.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg4')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 04: Preenchimento/Pré-Ocorr</span>
+                <span class="card-desc">Uso de campos e comentários adicionais.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg5')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 05: Uso do SIGC</span>
+                <span class="card-desc">Sanar dúvidas no sistema (Palavra chave).</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg6')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 06: Número Espelho</span>
+                <span class="card-desc">Identificar números inválidos (ex: 555).</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg7')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 07: Ramais Supervisão</span>
+                <span class="card-desc">Uso dos ramais 3161, 3162 e 3163.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg8')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 08: Placa não localizada</span>
+                <span class="card-desc">Busca por dados do proprietário (RG/CPF).</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg9')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 09: Monitor Instruções</span>
+                <span class="card-desc">Ler instruções na tela (Vaga Exclusiva).</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg10')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 10: Ligação Transferida</span>
+                <span class="card-desc">Inserir telefone manualmente se não houver ID.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg11')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 11: Alfabeto Fonético</span>
+                <span class="card-desc">Tabela completa Alpha-Zulu e números.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg12')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 12: Bloco de Notas</span>
+                <span class="card-desc">Proibição de coleta fora do sistema.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg13')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 13: Pausa Agent-MICC</span>
+                <span class="card-desc">Configurar para não entrar ligação na P.A.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg14')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 14: Uso da Internet</span>
+                <span class="card-desc">Apenas para fins de serviço e pesquisa.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('msg15')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Msg 15: Placa Mercosul</span>
+                <span class="card-desc">Tabela de conversão (Letras p/ Números).</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('atencao_treinamento')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Atenção: Status Treinamento</span>
+                <span class="card-desc">Alterar status ao contatar supervisão.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('atencao_erro_siopm')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Atenção: Erro SIOPM/Pós</span>
+                <span class="card-desc">Procedimento se ligação não "entrar" no SIOPM.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('atencao_indisponivel')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Atenção: Botão Indisponível</span>
+                <span class="card-desc">Não clicar durante o áudio com solicitante.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('atencao_chamada_caida')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Atenção: Chamadas Caídas</span>
+                <span class="card-desc">Acionar Botão 2 - Chamadas Não Concluídas.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('orientacao_retorno')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Orientação: Retorno Ligação</span>
+                <span class="card-desc">Protocolo de 7 passos para retorno.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('orientacao_trote')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Orientação: Trote</span>
+                <span class="card-desc">Checagem de histórico e verificação AML.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('municipio_errado')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Atenção: Município Correto</span>
+                <span class="card-desc">Confirmar sempre para evitar erro grave.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('tempo_retorno')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Atenção: Tempo Retorno</span>
+                <span class="card-desc">Evitar excesso de tempo em rediscagem.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('manter_contato')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Dica: Manter Contato</span>
+                <span class="card-desc">Fraseologia para não "abandonar" solicitante.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('perturbacao_ia')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Atenção: Perturbação (IA)</span>
+                <span class="card-desc">Informar recusa de cadastro pela IA.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('parente_interno')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Atenção: Parente Públ. Interno</span>
+                <span class="card-desc">Coletar dados (RE, Nome, Local).</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('impressos_pm09')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Atenção: Impressos PM 09</span>
+                <span class="card-desc">Conferir material p/ queda de sistema.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('tabela_veiculos')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Dica: Tabela Veículos</span>
+                <span class="card-desc">Deixar aberta no SIGC para agilizar.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('apoio_supervisao')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Apoio: Supervisão (SIGC)</span>
+                <span class="card-desc">Suicídio, Estupro, Risco - Via sistema.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('bloqueio_siopm')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Instrução: Bloqueio SIOPM</span>
+                <span class="card-desc">Transferência automática e procedimentos.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('elevadores')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Proibição: Elevadores</span>
+                <span class="card-desc">Uso de escadas/elevadores de costume.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('cabine_lilas')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Instrução: Cabine Lilás</span>
+                <span class="card-desc">Breve relato antes de transferir.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('onibus')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Instrução: Ônibus (Z99)</span>
+                <span class="card-desc">Ataques a ônibus e ramal 9800.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('cientificar_supervisao')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Ocorrências p/ Cientificar</span>
+                <span class="card-desc">Pré-OCR, Urgentes, Policial em Perigo.</span>
+            </button>
+        </div>
+
+        <div class="section-header sop">
+            <h2><span class="badge">SOP Militar</span> Ausência de Policial na Cabine</h2>
+        </div>
+        
+        <div class="grid sop-section">
+            <button class="card-btn" onclick="copyText('sop_indisponivel_instrucao')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">SOP Indisponível (Instrução Geral)</span>
+                <span class="card-desc">Redirecionar para Supervisão (3166-68).</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('sop_indisponivel_1630')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">SOP Indisponível (16:30 às 17:00)</span>
+                <span class="card-desc">Transferir para Supervisão (Vários Ramais).</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('sop_disponivel_agora')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">SOP Disponível (Voltou)</span>
+                <span class="card-desc">Redirecionar p/ 9939 (Aviso de retorno).</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('sop_ramal_correto')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">ATENÇÃO: Ramal Correto (9939)</span>
+                <span class="card-desc">NÃO transferir para 1026 ou 1027.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('sop_indisponivel_agora')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">SOP Indisponível (Status Agora)</span>
+                <span class="card-desc">Aviso imediato de indisponibilidade.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('aviso_visita')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Aviso de Visita</span>
+                <span class="card-desc">Manter postura e evitar conversas.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('sop_ramais_extra')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Ramais Supervisão (Alpha)</span>
+                <span class="card-desc">3166-68 e 3162-63 (Verificar disp.).</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('monitoria_tempo_real')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Monitoria em Tempo Real</span>
+                <span class="card-desc">Bordões e questionamentos obrigatórios.</span>
+            </button>
+
+            <button class="card-btn" onclick="copyText('sop_questionamentos_pm')">
+                <svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span class="card-title">Questionamentos PM (Prefixo)</span>
+                <span class="card-desc">Coleta de Prefixo, Cia e Batalhão.</span>
+            </button>
+        </div>
+    </main>
+
+    <footer>
+        Este projeto une o conteúdo original de Sgt PM Oliva à tecnologia desenvolvida por Sgt PM Ullmann. 
+    </footer>
+
+    <script>
+        const texts = {
+            // --- SEÇÃO 1 (GERAL) ---
+            'intro': `ATENDENTES CIVIS...LEIAM AS MENSAGENS DE ORIENTAÇÕES ENVIADAS PELA SUPERVISÃO...ELAS PODEM SANAR SUAS DÚVIDAS E FACILITAR SEU SERVIÇO...AS MENSAGENS SERÃO COMPILADAS PARA FACILITAR O ENVIO E LEITURA...SALVE-A NUM BLOCO DE NOTAS E LEIA QUANDO POSSÍVEL...UTILIZE-AS...TENHAM TODOS UM EXCELENTE SERVIÇO...`,
+            'msg1': `MENSAGEM 1\nATENDENTE 190, NÃO SE ESQUEÇA DE ALTERAR SEU STATUS NA OPÇÃO "MOTIVO DE NÃO DISPONÍVEL" NO AGENT-MICC QUANDO SE AUSENTAR DA P.A. (PAUSA "BANHEIRO", PAUSA "LANCHE" OU PAUSA “TREINAMENTO”), BEM COMO ESTIVER TERMINANDO O CADASTRO DE OCORRÊNCIA (PÓSATENDE).`,
+            'msg2': `MENSAGEM 2\nATENDENTE 190, O “POSATENDE” PERMITE AO SUPERVISOR VISUALIZAR QUE O SENHOR (A) ENCERROU O CONTATO TELEFÔNICO COM O SOLICITANTE E ESTÁ TERMINANDO DE INSERIR OS DADOS DA OCORRÊNCIA NO SISTEMA. CASO NÃO SEJA FEITA A ALTERAÇÃO O SENHOR(A) PERMANECERÁ EM “PAUSA”, SENDO ALVO DE MONITORIA ATRAVÉS DO USO DA FERRAMENTA ESPECÍFICA.`,
+            'msg3': `MENSAGEM 3\nATENDENTE 190, AO CIENTIFICAR A SUPERVISÃO SOBRE OCORRÊNCIAS CADASTRADAS, INFORME PRIMEIRO O NÚMERO DO TALÃO, E POSTERIORMENTE, DE FORMA BREVE, O CONTEXTO DA OCORRÊNCIA E SUA NATUREZA (EX: "TALÃO 0000, A98, PARTE DA OCORRÊNCIA PORTANDO ARMA BRANCA). NÃO HÁ NECESSIDADE DE EXPLICAR A OCORRÊNCIA, UMA VEZ AS INFORMAÇÕES JÁ CONSTAREM NO HISTÓRICO DA OCORRÊNCIA. PARA ISSO, INSIRA TODAS AS INFORMAÇÕES REPASSADAS PELO SOLICITANTE.`,
+            'msg4': `MENSAGEM 4\nATENDENTE 190, AO RECEBER UMA LIGAÇÃO NÃO SE ESQUEÇA DE SEGUIR OS CAMPOS PARA PREENCHIMENTO DA OCORRÊNCIA (SOLICITANTE, MUNICÍPIO, ENDEREÇO, NÚMERO, REFERÊNCIA E ASSUNTO) E SEGUIR AS PERGUNTAS DA ÁRVORE DE DECISÃO. EM CASO DE OCORRÊNCIAS DE GRAVIDADE QUE SERÁ GERADO "PRÉ-OCORR", UTILIZE O CAMPO "COMENTÁRIO ADICIONAL"  PARA INSERIR INFORMAÇÕES DE RELEVÂNCIA QUE POSSAM AJUDAR NO DESPACHO E ATENDIMENTO DA OCORRÊNCIA. ESTAS INFORMAÇÕES IRÃO APARECER NA TELA DO DESPACHO ANTES MESMO DO ENCERRAMENTO DO CADASTRO DA OCORRÊNCIA, AUXILIANDO O ATENDIMENTO DA OCORRÊNCIA E ANTECIPANDO INFORMAÇÕES NECESSÁRIAS PARA O POLICIAL MILITAR.`,
+            'msg5': `MENSAGEM 5\nATENDENTE 190, UTILIZE O SIGC - SISTEMA INTEGRADO DE GESTÃO DO CONHECIMENTO A FIM DE SANAR EVENTUAIS DÚVIDAS NO CADASTRO DE OCORRÊNCIA. ATRAVÉS DA BARRA DE BUSCA É POSSÍVEL, PELA “PALAVRA CHAVE”, LOCALIZAR A RESPECTIVA INSTRUÇÃO. CONTE COM ESTE APOIO IMPORTANTE PARA O CADASTRO DE OCORRÊNCIAS.`,
+            'msg6': `MENSAGEM 6\nATENDENTE 190, AO RECEBER UMA LIGAÇÃO, VERIFIQUE SE O NÚMERO QUE APARECE NO SISTEMA OU NA TELA DO APARELHO TELEFÔNICO NÃO SE TRATA DE “NÚMERO ESPELHO” (NÚMERO QUE NÃO SE ASSEMELHA COM “NÚMERO DE CELULAR” OU “NÚMERO FIXO”), COMO OS NÚMEROS “555” QUE COSTUMA APARECER NA BINA. CASO CONSTATE O OCORRIDO, SOLICITE UM NÚMERO PARA CONTATO E INSIRA NO CADASTRO.`,
+            'msg7': `MENSAGEM 7\nATENDENTE 190, ALÉM DOS RAMAIS 3166, 3167 E 3168, O SENHOR(A) AINDA PODE CONTAR COM OS RAMAIS 3161, 3162 E 3163 (RAMAIS DE SUPERVISÃO PRÓXIMOS DAS JANELAS). UTILIZE OS RAMAIS 3161, 3162 E 3163 A QUALQUER MOMENTO PARA ESCLARECER DÚVIDAS, REALIZAR PESQUISAS, DAR CIÊNCIA DE TALÕES E QUALQUER OUTRA NECESSIDADE. CONTE COM A SUPERVISÃO 190 DA EQUIPE ALPHA.`,
+            'msg8': `MENSAGEM 8\nATENDENTE 190, CASO A PLACA FORNECIDA NÃO SEJA LOCALIZADA NO SISTEMA (PESQUISA VEÍCULOS) E HAJA NECESSIDADE DE INSERI-LA, PEÇA AO SOLICITANTE DADOS PARA QUE A SUPERVISÃO POSSA REALIZAR “BUSCA POR DADOS DO PROPRIETÁRIO” (RG, NOME, CPF E CNPJ). ISSO IRÁ AGILIZAR AS PESQUISAS E O CADASTRO DA OCORRÊNCIA.`,
+            'msg9': `MENSAGEM 9\nATENDENTE 190, O SETOR DE ATENDIMENTO 190 DISPÕE DE UM MONITOR COM INSTRUÇÕES PERTINENTES PARA O CADASTRO DE OCORRÊNCIAS. LEIA AS INSTRUÇÕES. ELAS PODEM SANAR SUAS DÚVIDAS. A INSTRUÇÃO QUE ESTÁ SENDO REPASSADA HOJE É “VAGA DE ESTACIONAMENTO EXCLUSIVA”.`,
+            'msg10': `MENSAGEM 10\nATENDENTE 190, LIGAÇÕES TRANSFERIDAS DIRETAMENTE PELO APARELHO NÃO ACOMPANHAM O NÚMERO DE TELEFONE DO SOLICITANTE NO LOG DE CHAMADAS. CASO RECEBA UMA LIGAÇÃO TRANSFERIDA DA SUPERVISÃO OU DE OUTRO ATENDENTE, OBSERVE SE O NÚMERO QUE APARECE NO SIOPM CORP OU NA BINA DO APARELHO TELEFÔNICO NÃO É DO RAMAL QUE A TRANSFERIU. CASO SEJA, SERÁ NECESSÁRIO ACRESCENTAR O NÚMERO DE TELEFONE JUNTAMENTE COM O NOME DO SOLICITANTE, CONFORME INSTRUÇÃO "TRANSFERÊNCIA DE CHAMADAS" DO SICG - SISTEMA INTEGRADO DE GESTÃO DO CONHECIMENTO.`,
+            'msg11': `MENSAGEM 11\nATENDENTE 190, A UTILIZAÇÃO DO “ALFABETO FONÉTICO INTERNACIONAL” E DOS “NÚMEROS CARDINAIS” FACILITA A COMUNICAÇÃO (COM EXCEÇÃO DO NÚMERO “UM” E DO NÚMERO “SEIS”, QUE FACILITA PRONUNCIAR “UNO” E “MEIA”, RESPECTIVAMENTE.\n\nA-ALPHA\nB-BRAVO\nC-CHARLIE\nD-DELTA\nE-ECHO\nF-FOX\nG-GOLF\nH-HOTEL\nI-INDIA\nJ-JULIET\nK-KILO\nL-LIMA\nM–MIKE\nN–NOVEMBER\nO-OSCAR\nP-PAPA\nQ-QUEBEC\nR-ROMEO\nS-SIERRA\nT-TANGO\nU-UNIFORM\nV-VICTOR\nW-WHISKEY\nX-XINGU\nY-YANKEE\nZ-ZULU\n1-UM(UNO)\n2-DOIS\n3-TRÊS\n4-QUATRO\n5-CINCO\n6-SEIS(MEIA)\n7-SETE\n8-OITO\n9-NOVE\n0-ZERO`,
+            'msg12': `MENSAGEM 12\nATENDENTE 190, NÃO UTILIZE BLOCO DE NOTAS PARA COLETAR INFORMAÇÕES REPASSADAS PELO SOLICITANTE E INSERI-LÁS POSTERIORMENTE NO SISTEMA. SIGA AS PERGUNTAS DA ÁRVORE DE DECISÃO, INSERINDO AS RESPOSTAS CONFORME SOLICITAÇÃO DO SISTEMA. FAZENDO ISSO, O(A) SENHOR(A) UTILIZA TEMPO MAIOR QUE O NECESSÁRIO PARA O CADASTRO DE OCORRÊNCIAS. HAVENDO NECESSIDADE DE INSERIR ALGUMA INFORMAÇÃO COMPLEMENTAR APÓS O ENCERRAMENTO DO ÁUDIO COM O SOLICITANTE UTILIZE O “POSATENDE”. LEMBRE-SE: O “POSATENDE” SERVE PARA TERMINAR O CADASTRO DE OCORRÊNCIA. SEJA BREVE NA INSERÇÃO.`,
+            'msg13': `MENSAGEM 13\nATENDENTE 190, LEMBRE-SE: QUANDO SE AUSENTAR DA P.A. PARA A PAUSA “LANCHE”, “BANHEIRO” OU “TREINAMENTO”, FAÇA A ALTERAÇÃO NO AGENT-MICC PARA “NÃO ENTRAR LIGAÇÃO EM SUA P.A”. O SIOPM CORP É ALTERADO AUTOMATICAMENTE. TEM SIDO OBSERVADO CONSTANTEMENTE QUE O ATENDENTE SE AUSENTA DE SUA P.A. E NÃO FAZ A ALTERAÇÃO CORRETA NO AGENT-MICC.`,
+            'msg14': `MENSAGEM 14\nATENÇÃO...SENHORES ATENDENTES, É PROIBIDO A UTILIZAÇÃO DA INTERNET PARA FINS QUE NÃO SEJAM OS DE SERVIÇO. UTILIZE A INTERNET APENAS PARA PROCURAR ENDEREÇOS, REFERÊNCIAS OU QUALQUER INFORMAÇÃO PARA CADASTRO DE OCORRÊNCIAS.`,
+            'msg15': `MENSAGEM 15\nATENÇÃO...CONVERSÃO DA PLACA ATUAL PARA “PLACA MERCOSUL”:\n0 = A\n1 = B\n2 = C\n3 = D\n4 = E\n5 = F\n6 = G\n7 = H\n8 = I\n9 = J`,
+            'atencao_treinamento': `*** ATENÇÃO: ESTÁ DISPONÍVEL NO AGENT-MICC A OPÇÃO "TREINAMENTO" NO BOTÃO "ALTERAR MOTIVO DE NÃO DISPONÍVEL". HAVENDO NECESSIDADE DE SE AUSENTAR DA P.A. PARA CONTATO COM A SUPERVISÃO CIVIL OU MILITAR PARA TRATAR DE ASSUNTOS PERTINENTES AO SERVIÇO, FAÇA A ALTERAÇÃO. NÃO DEIXE DE ALTERAR SEU STATUS. ***`,
+            'atencao_erro_siopm': `*** ATENÇÃO: CASO O SENHOR(A) RECEBA CHAMADA, O AGENT-MICC ABRIR NORMALMENTE E A LIGAÇÃO NÃO "ENTRAR" NO SIOPM, PROCEDA COMO DE COSTUME PARA ABRIR O SISTEMA (SIOPM) CLICANDO NO BOTÃO "AGUARDANDO LIGAÇÕES" PARA APARECER A MENSAGEM "DIGITE UM TELEFONE", ALTERANDO PARA "POSATENDE" NO AGENT-MICC. CASO NÃO PROCEDA DESTA MANEIRA, O SENHOR(A) FICARÁ COMO "NÃO DISPONÍVEL" PARA A SUPERVISÃO. ***`,
+            'atencao_indisponivel': `*** ATENÇÃO: NÃO CLIQUE NO BOTÃO “FICAR INDISPONÍVEL” DO SIOPM ENQUANTO ESTIVER EM CONTATO COM O SOLICITANTE, EVITANDO QUE O SENHOR(A) APAREÇA NO PAINEL DA SUPERVISÃO COMO STATUS “NÃO DISPONÍVEL”. ESTE BOTÃO DEVERÁ SER ACIONADO APENAS APÓS ENCERRAMENTO DO ÁUDIO COM O SOLICITANTE E HOUVER A NECESSIDADE DO ATENDENTE TERMINAR DE CADASTRAR A OCORRÊNCIA NO SISTEMA E FICAR INDISPONÍVEL PARA O RECEBIMENTO DE CHAMADAS. ***`,
+            'atencao_chamada_caida': `*** ATENÇÃO: CASO RECEBA LIGAÇÃO EM SUA P.A. E ELA VENHA A CAIR, CLIQUE DE IMEDIATO NO BOTÃO "2 - CHAMADAS NÃO CONCLUÍDAS" NA COLUNA "CLASSIFICAÇÃO DE CHAMADAS". ESTEJA APTO PARA RECEBER OUTRAS LIGAÇÕES. CASO O SENHOR(A) NÃO REALIZE ESTE PROCEDIMENTO, SUA P.A. APARECERÁ NO PAINEL DA SUPERVISÃO COMO "PAUSA". ***`,
+            'orientacao_retorno': `ORIENTAÇÃO RETORNO DE LIGAÇÃO\n\nRESUMINDO AS ORIENTAÇÕES DE RETORNO DE LIGAÇÃO:\n1) LIGAÇÕES QUE TENHAM PEDIDO DE SOCORRO OU QUE NECESSITEM COMPLEMENTAR DADOS PARA O CADASTRO DE OCORRÊNCIA;\n 2) UTILIZAR SEMPRE A OPERADORA VIVO 015;\n 3) RETORNAR 2X A LIGAÇÃO;\n 4) PROIBIDO USAR O APARELHO PARA ASSUNTOS PARTICULARES;\n 5) SOLICITANTE NÃO ATENDE O TELEFONE APÓS 2 TENTATIVAS OU NÃO HAVER ENDEREÇO OU INFORMAÇÕES SUFICIENTES PARA GERAR A OCORRÊNCIA, CLASSIFICAR A CHAMADA A "CHAMADA NÃO CONCLUÍDA";\n 6) NÃO CONSEGUINDO CONTATO COM O SOLICITANTE DE VIOLÊNCIA DOMÉSTICA OU APOIO PARA POLICIAIS MILITARES E AUTORIDADES, DEVERÁ SOLICITAR APOIO AOS SUPERVISORES 190;\n\n7) NO AGENT MICC, CLICAR EM “ALTERAR MOTIVO DE NÃO DISPONÍVEL” E SELECIONAR A OPÇÃO “REDISCAGEM”.`,
+            'orientacao_trote': `ORIENTAÇÃO SOBRE TROTE\nATENÇÃO...CAUTELA AO CADASTRAR OCORRÊNCIAS QUE SUPOSTAMENTE SEJAM TROTE...FAÇA O CADASTRO NORMALMENTE, E CASO SEJA CONSTATADO ATRAVÉS DO LOG DE CHAMADAS QUE JÁ EXISTEM OCORRÊNCIAS ANTERIORES PROVENIENTE DO NÚMERO QUE ESTÁ LIGANDO, RELACIONE NO HISTÓRICO TAL INFORMAÇÃO, CONSTANDO QUE "CONSULTADO O LOG DE CHAMADAS, VERIFICOU-SE DIVERSAS CHAMADAS DO NÚMERO DE TELEFONE, ALGUMAS DELAS ENCERRADA COMO TROTE"...ESTE É APENAS UM EXEMPLO QUE TEXTO QUE PODE SER INSERIDO PELO SENHOR (A), PODENDO AINDA SER INSERIDO A PARTIR DE QUE DATA FOI CONSULTADO O NÚMERO DE TELEFONE. AINDA, CONSTATANDO SER UM “POSSÍVEL TROTE”, INFORMAR AO SOLICITANTE QUE É POSSÍVEL CONSTATAR O LOCAL ONDE ELE SE ENCONTRA ATRAVÉS DA LOCALIZAÇÃO OBTIDA NO BOTÃO “OBTER LOCALIZAÇÃO (AML)”, QUESTIONANDO SE A LIGAÇÃO NÃO SE TRATA DE UM TROTE, E QUE FOI CONSTATADO EM SISTEMA QUE HÁ DIVERSAS LIGAÇÕES DO TELEFONE INCLUSIVE “ALGUMAS” COMO TROTE.`,
+            'municipio_errado': `NÃO SE ESQUEÇAM DE PERGUNTAR E CONFIRMAR O MUNICÍPIO DA OCORRÊNCIA. POR MAIS QUE O(A) SENHOR(A) CONHEÇA A VIA PÚBLICA INFORMADA, ESTA PODE EXISTIR EM OUTROS MUNICÍPIOS, E UMA OCORRÊNCIA CADASTRADA EM "MUNICÍPIO ERRADO" PODE CUSTAR A VIDA DE PESSOAS. QUESTIONE SEMPRE POR MAIS QUE A PESSOA JÁ TENHA FALADO, E AGUARDE O SOLICITANTE CONFIRMAR SUA PERGUNTA. REFLITA NISTO...`,
+            'tempo_retorno': `APÓS AS 2 (DUAS) TENTATIVAS DE RETORNO AO SOLICITANTE SEM ÊXITO, HAVENDO NECESSIDADE DE ENCERRAR O CADASTRO, MUDAR DE "REDISCAGEM" PARA "POSATENDE". ESTÁ SENDO CONSTATADO ATRAVÉS DA MONITORIA QUE ALGUNS ATENDENTES ESTÃO PERMANECENDO TEMPO EXCESSIVO QUANTO AO RETORNO, PERMANECENDO "INDISPONÍVEL".`,
+            'manter_contato': `DURANTE O CADASTRO DE OCORRÊNCIA NÃO DEIXE DE MANTER CONTATO COM O SOLICITANTE ENQUANTO ESTIVER OBSERVANDO AS INFORMAÇÕES REPASSADAS. INFORME QUE O(A) SENHOR(A) ESTÁ CADASTRANDO A OCORRÊNCIA, MANTENDO CONTATO ATRAVÉS DE FRASES COMO "ESTOU CADASTRANDO SUA OCORRÊNCIA, UM INSTANTE", "UM INSTANTE, ESTOU OBSERVANDO SUAS INFORMAÇÕES", OU OUTRAS QUE DEMONSTREM QUE A LIGAÇÃO ESTÁ ATIVA E QUE O(A) SENHOR(A) ESTÁ NA LINHA OUVINDO TODAS AS INFORMAÇÕES E NÃO “ABANDONOU” O SOLICITANTE NA LIGAÇÃO.`,
+            'perturbacao_ia': `ATENÇÃO: NÃO SE ESQUEÇAM DE INFORMAR À SUPERVISÃO AS OCORRÊNCIAS DE "C01 - PERTURBAÇÃO DE SOSSEGO PÚBLICO" EM QUE O SOLICITANTE TENHA RECUSADO O CADASTRO PELA I.A - INTELIGÊNCIA ARTIFICIAL, INFORMANDO O NÚMERO DA OCORRÊNCIA (TALÃO) CADASTRADO.`,
+            'parente_interno': `ATENÇÃO: QUANDO O SOLICITANTE INFORMAR SER PARENTE DE PÚBLICO INTERNO COLETE AS INFORMAÇÕES A RESPEITO DO POLICIAL MILITAR, COMO R.E., NOME COMPLETO, ONDE TRABALHA, SE ESTÁ DE FOLGA OU DE SERVIÇO...ESTAS INFORMAÇÕES IRÃO AJUDAR NA COMPREENSÃO DO GRAU DE PARENTESCO ENTRE SOLICITANTE E O REFERIDO POLICIAL MILITAR...DA MESMA MANEIRA, QUANDO O SOLICITANTE INFORMAR SER “PÚBLICO INTERNO”, QUESTIONE O R.E., E SENDO AGENTE DE OUTRAS FORÇAS DE SEGURANÇA O RESPECTIVO REGISTRO.`,
+            'impressos_pm09': `ATENÇÃO: VERIFIQUE SE O DISPLAY PLÁSTICO LOCALIZADO NA LATERAL DE SUA P.A. DISPÕE DE IMPRESSOS DE "AVISO DE OCORRÊNCIA" (PM 09) PARA UMA EVENTUAL QUEDA DO SISTEMA E NECESSIDADE DE CADASTRO MANUAL...ANTECIPE-SE, E ACIONE A SUPERVISÃO CASO NÃO DISPONHA DOS IMPRESSOS...AINDA, NÃO UTILIZE OS IMPRESSOS COMO RASCUNHO.`,
+            'tabela_veiculos': `DICA: POR SE TRATAR DE OCORRÊNCIA CORRIQUEIRA NO ATENDIMENTO 190, TENHA O COSTUME DE DEIXAR ABERTO, A FIM DE AGILIZAR O CADASTRO, A INSTRUÇÃO SOBRE VEÍCULO (TABELA DE VEÍCULOS - 2023) E DEMAIS INSTRUÇÕES SOBRE O ASSUNTO, LOCALIZADA NO SIGC - SISTEMA INTEGRADO DE GESTÃO DO CONHECIMENTO. NELA ESTÃO CONTIDAS VÁRIAS SITUAÇÕES COM VEÍCULOS…FACILITE O SEU TRABALHO!`,
+            'apoio_supervisao': `ATENDENTE 190, HAVENDO A NECESSIDADE DE SOLICITAR APOIO À SUPERVISÃO EM CASOS DE TENTATIVA DE SUICÍDIO, ESTUPRO EM ANDAMENTO, RISCO IMINENTE À VIDA E POLICIAL EM PERIGO, E NÃO PUDER FAZER ATRAVÉS DO RAMAL, ACIONE A SUPERVISÃO ATRAVÉS DO SIGC - SISTEMA INTEGRADO DE GESTÃO DO CONHECIMENTO...NÃO SE ESQUEÇA DESTA IMPORTANTE OPÇÃO DE PEDIDO DE APOIO.`,
+            'bloqueio_siopm': `ATENDENTE 190, TENHA CONHECIMENTO DO CONTIDO NA INSTRUÇÃO “PROCEDIMENTO NOS CASOS DE BLOQUEIO DO SIOPM E TRANSFERÊNCIA DE LIGAÇÕES”. ELA SERÁ ÚTIL NO CASO EM QUE OCORRA O BLOQUEIO DO SIOPM E TRANSFERÊNCIA DE LIGAÇÕES PARA OUTRO ATENDENTE.`,
+            'elevadores': `ATENÇÃO: É PROIBIDO, AOS COLABORADORES CIVIS, O ACESSO E UTILIZAÇÃO DOS ELEVADORES E ESCADAS PRÓXIMOS ÀS JANELAS...PARA ACESSAR OS DEMAIS ANDARES, UTILIZE AS ESCADAS E ELEVADORES DE COSTUME.`,
+            'cabine_lilas': `ATENÇÃO: CONFORME INSTRUÇÃO VIGENTE NO "SIGC - SISTEMA INTEGRADO DE GESTÃO DO CONHECIMENTO" SOBRE A "CABINE LILÁS", OS ATENDENTES DEVERÃO AGUARDAR A POLICIAL DA CABINE LILÁS ATENDER E RELATAR BREVEMENTE A NECESSIDADE DO SOLICITANTE. TENHAM CONHECIMENTO DAS INSTRUÇÕES QUE VERSA SOBRE A "CABINE LILÁS". TEM OCORRIDO CONSTANTEMENTE A TRANSFERÊNCIA DIRETA PARA A CABINE SEM O BREVE RELATO DO ATENDENTE.`,
+            'onibus': `ATENÇÃO: SE ATENTAR PARA A INSTRUÇÃO VIGENTE QUE VERSA SOBRE OCORRÊNCIAS COM ÔNIBUS...AS OCORRÊNCIAS EM QUE O SOLICITANTE RELATAR ATAQUES A ÔNIBUS DEVERÃO SER CADASTRADAS COM O CÓDIGO “Z99 OCORRÊNCIAS COM ÔNIBUS”, COLETANDO TODAS AS INFORMAÇÕES NECESSÁRIAS E, OBRIGATORIAMENTE, COMUNICAR IMEDIATAMENTE O FATO NO RAMAL 9800, FORNECENDO O NÚMERO DO TALÃO GERADO.`,
+            'cientificar_supervisao': `OCORRÊNCIAS QUE DEVEM SER CIENTIFICADAS A SUPERVISÃO 190\n\nATENÇÃO: COM BASE NAS NORMAS QUE REGEM O “ATENDIMENTO TELEFÔNICO 190” E MEMORANDO VIGENTE, O SENHOR (A) DEVERÁ ACIONAR O SUPERVISOR EM TODA PRÉ-OCORRÊNCIA (PRÉ-OCR) E, EVENTUALMENTE, EM OCORRÊNCIAS URGENTES, QUANDO ENTENDER NECESSÁRIO REPORTAR CASOS DE MAIOR GRAVIDADE. RESSALTA-SE QUE ALGUNS OPERADORES PODEM ESTAR ACIONANDO O SUPERVISOR POR EXCESSO DE CAUTELA, COM A INTENÇÃO DE CONTRIBUIR PARA O MELHOR DESFECHO DO ATENDIMENTO EMERGENCIAL, CONDUTA QUE SERÁ AJUSTADA POR MEIO DE ALINHAMENTO E FEEDBACK INDIVIDUAL, QUE PODERÁ SER REALIZADO PELO PRÓPRIO SUPERVISOR MILITAR DE IMEDIATO. ASSIM, AS DEMAIS OCORRÊNCIAS CLASSIFICADAS PELO SIOPM COMO “PRIORIDADE NORMAL” NÃO PRECISAM SER COMUNICADAS A SUPERVISÃO. LEMBRE-SE: APENAS AS OCORRÊNCIAS DE “PRÉ-OCR”, “URGENTES” (CASOS DE MAIOR GRAVIDADE) OU ENVOLVENDO “POLICIAL EM PERIGO” DEVEM SER COMUNICADAS A SUPERVISÃO, BEM COMO AS DEMAIS QUE A PRÓPRIA ÁRVORE DE DECISÃO DETERMINAR.`,
+
+            // --- SEÇÃO 2 (SOP MILITAR) ---
+            'sop_indisponivel_instrucao': `ATENÇÃO: QUANDO A CABINE "SOP MILITAR" ESTIVER INDISPONÍVEL PARA O ATENDIMENTO, IREMOS CIENTIFICÁ-LOS VIA MENSAGEM PARA QUE AS LIGAÇÕES SEJAM REDIRECIONADA PARA OS RAMAIS DA SUPERVISÃO (3166, 3167 E 3168). QUANDO A CABINE ESTIVER NOVAMENTE DISPONÍVEL, IREMOS AVISÁ-LOS VIA MENSAGEM PARA QUE VOLTEM A TRANSFERIR AS LIGAÇÕES PARA A CABINE "SOP MILITAR"…ATENTEM-SE PARA AS MENSAGENS ENVIADAS PELA SUPERVISÃO.`,
+            'sop_indisponivel_1630': `ATENÇÃO: A CABINE “SOP MILITAR” FICARÁ INDISPONÍVEL DAS 16H30MIN ÀS 17H00MIN…TRANSFIRAM AS LIGAÇÕES PARA A SUPERVISÃO (RAMAIS 3162, 3163, 3166, 3167 E 3168)...QUANDO A CABINE ESTIVER NOVAMENTE DISPONÍVEL, IREMOS AVISÁ-LOS VIA MENSAGEM PARA QUE VOLTEM A TRANSFERIR AS LIGAÇÕES PARA A CABINE "SOP MILITAR"…ATENTAR PARA AS MENSAGENS ENVIADAS PELA SUPERVISÃO.`,
+            'sop_disponivel_agora': `A CABINE "SOP MILITAR" ENCONTRA-SE DISPONÍVEL PARA O ATENDIMENTO...AS LIGAÇÕES DEVEM SER REDIRECIONADAS PARA O RAMAL 9939...NA INDISPONIBILIDADE DA CABINE, AVISAREMOS VIA MENSAGEM PARA QUE AS LIGAÇÕES SEJAM TRANSFERIDAS PARA A SUPERVISÃO...`,
+            'sop_ramal_correto': `ATENÇÃO: LIGAÇÕES ORIUNDAS DE POLICIAL MILITAR EM SERVIÇO DEVERÃO SER TRANSFERIDAS EXCLUSIVAMENTE PARA O "SOP MILITAR" NO RAMAL 9939...NÃO TRANSFERIR ESTAS LIGAÇÕES PARA O RAMAL 1026 OU 1027...TEM OCORRIDO DE ATENDENTES TRANSFERIREM DIRETAMENTE PARA OS RAMAIS 1026 OU 1027, O QUE É ERRADO...TRANSFIRA AS LIGAÇÕES PARA O RAMA 9939, ASSIM O POLICIAL MILITAR ENTRARÁ NUMA FILA DE ESPERA, AGUARDANDO O MOMENTO OPORTUNO PARA SEU ATENDIMENTO.`,
+            'sop_indisponivel_agora': `ATENÇÃO: A CABINE “SOP MILITAR” ESTÁ INDISPONÍVEL…TRANSFIRAM AS LIGAÇÕES PARA A SUPERVISÃO (RAMAIS 3166, 3167 E 3168)...QUANDO A CABINE ESTIVER DISPONÍVEL, IREMOS AVISÁ-LOS VIA MENSAGEM PARA QUE VOLTEM A TRANSFERIR AS LIGAÇÕES PARA A CABINE "SOP MILITAR"…ATENTAR PARA AS MENSAGENS ENVIADAS PELA SUPERVISÃO.`,
+            'aviso_visita': `ATENÇÃO: TEREMOS VISITA NO ____...SOLICITAMOS A TODOS OS ATENDENTES CIVIS QUE MANTENHAM POSTURA EM SUA POSIÇÃO DE ATENDIMENTO, EVITANDO DISPERSÕES, DESATENÇÃO AO SERVIÇO E PERTURBAÇÕES INDEVIDAS RESULTANTE DE FORMAÇÃO DE GRUPOS DE CONVERSAS PARALELAS.`,
+            'sop_ramais_extra': `ATENDENTE 190, ALÉM DOS RAMAIS 3166, 3167 E 3168, O SENHOR(A) PODE CONTAR AINDA COM OS RAMAIS 3162 E 3163 (RAMAIS DE SUPERVISÃO PRÓXIMOS DAS JANELAS). CONTE COM A SUPERVISÃO DA EQUIPE ALPHA...VERIFIQUE A DISPONIBILIDADE DA SUPERVISÃO NO RESPECTIVO RAMAL ANTES DE LIGAR…`,
+            'monitoria_tempo_real': `ATENÇÃO PARA A MONITORIA EM TEMPO REAL...FAÇA TODOS OS QUESTIONAMENTOS PARA O CADASTRO DE OCORRÊNCIA, COMO NOME, MUNICÍPIO, REFERÊNCIA, BEM COMO OS BORDÕES "POLÍCIA MILITAR EMERGÊNCIA" E "CONTE COM A POLÍCIA MILITAR"...`,
+            'sop_questionamentos_pm': `AO RECEBER LIGAÇÃO DE POLICIAL MILITAR DE SERVIÇO, FAÇA OS QUESTIONAMENTO DE COSTUME, E SE POSSÍVEL O PREFIXO DE SUA VIATURA…CASO O POLICIAL MILITAR ESTEJA ESCALADO EM POSTO FIXO, PERGUNTE A COMPANHIA E BATALHÃO...TAIS QUESTIONAMENTOS AUXILIAM A SUPERVISÃO OU O SOP MILITAR NO REDIRECIONAMENTO A CABINE CORRETA…SUPERVISÃO 190 AGRADECE…`
+        };
+
+        function copyText(key) {
+            const textToCopy = texts[key];
+            if (!textToCopy) return;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showSuccess(key);
+            }).catch(err => {
+                const textArea = document.createElement("textarea");
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("Copy");
+                textArea.remove();
+                showSuccess(key);
+            });
+        }
+
+        function showSuccess(key) {
+            const btn = document.querySelector(`button[onclick="copyText('${key}')"]`);
+            if (btn) {
+                // Adiciona classe de sucesso
+                btn.classList.add('copied');
+                
+                // Salva texto original do título
+                const titleSpan = btn.querySelector('.card-title');
+                const originalTitle = titleSpan.innerText;
+                
+                // Muda texto temporariamente
+                titleSpan.innerText = "COPIADO COM SUCESSO!";
+
+                // Reverte após 1.5s
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    titleSpan.innerText = originalTitle;
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
